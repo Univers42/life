@@ -25,7 +25,10 @@ void	grid_alloc(t_grid *grid, int width, int height)
 	grid->cells = ft_calloc(cells, sizeof(char));
 	grid->next = ft_calloc(cells, sizeof(char));
 	grid->initial = ft_calloc(cells, sizeof(char));
-	if (!grid->cells || !grid->next || !grid->initial)
+	grid->age = ft_calloc(cells, sizeof(int));
+	grid->age_next = ft_calloc(cells, sizeof(int));
+	if (!grid->cells || !grid->next || !grid->initial
+		|| !grid->age || !grid->age_next)
 		error_exit("malloc failed while allocating grid");
 }
 
@@ -34,7 +37,11 @@ void	grid_free(t_grid *grid)
 	free(grid->cells);
 	free(grid->next);
 	free(grid->initial);
+	free(grid->age);
+	free(grid->age_next);
 	grid->cells = NULL;
 	grid->next = NULL;
 	grid->initial = NULL;
+	grid->age = NULL;
+	grid->age_next = NULL;
 }

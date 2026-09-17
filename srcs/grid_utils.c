@@ -40,6 +40,7 @@ void	grid_save_initial(t_grid *grid)
 		grid->initial[i] = grid->cells[i];
 		i++;
 	}
+	age_reset(grid);
 }
 
 void	grid_reset(t_grid *grid)
@@ -52,6 +53,7 @@ void	grid_reset(t_grid *grid)
 		grid->cells[i] = grid->initial[i];
 		i++;
 	}
+	age_reset(grid);
 }
 
 int	grid_count_alive(t_grid *grid)

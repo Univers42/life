@@ -38,17 +38,24 @@ static void	reduce_counts(t_game *game)
 	}
 }
 
-void	step_grid(t_game *game)
+static void	swap_buffers(t_grid *grid)
 {
-	t_grid	*grid;
 	char	*tmp;
+	int		*tmp_age;
 
-	dispatch_step(&game->pool);
-	reduce_counts(game);
-	grid = &game->grid;
 	tmp = grid->cells;
 	grid->cells = grid->next;
 	grid->next = tmp;
+	tmp_age = grid->age;
+	grid->age = grid->age_next;
+	grid->age_next = tmp_age;
+}
+
+void	step_grid(t_game *game)
+{
+	dispatch_step(&game->pool);
+	reduce_counts(game);
+	swap_buffers(&game->grid);
 	game->pop_total += game->pop_births - game->pop_deaths;
 	game->generation++;
 }

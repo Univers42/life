@@ -46,6 +46,7 @@ void	render_grid(t_game *game)
 {
 	int	x;
 	int	y;
+	int	idx;
 
 	y = 0;
 	while (y < game->grid.height)
@@ -53,10 +54,8 @@ void	render_grid(t_game *game)
 		x = 0;
 		while (x < game->grid.width)
 		{
-			if (grid_get(&game->grid, x, y))
-				draw_cell(game, x, y, COLOR_ALIVE);
-			else
-				draw_cell(game, x, y, COLOR_DEAD);
+			idx = y * game->grid.width + x;
+			draw_cell(game, x, y, age_color(game->grid.age[idx]));
 			x++;
 		}
 		y++;

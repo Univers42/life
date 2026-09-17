@@ -21,9 +21,11 @@ SRCS		= main.c \
 			  grid_alloc.c \
 			  grid_utils.c \
 			  grid_edge.c \
+			  grid_age.c \
 			  rules_step.c \
 			  init_mlx.c \
 			  render.c \
+			  render_color.c \
 			  render_status.c \
 			  render_fields.c \
 			  hooks_key.c \

@@ -32,9 +32,18 @@
 # define MAX_GRID_WIDTH		4000
 # define MAX_GRID_HEIGHT	3000
 
-# define COLOR_ALIVE		0x00FF7F
 # define COLOR_DEAD			0x101018
 # define COLOR_STATUS		0xFFFFFF
+
+# define MAX_AGE			60
+# define AGE_STOPS			6
+
+# define AGE_COLOR_0		0xFFF176
+# define AGE_COLOR_1		0x00FF7F
+# define AGE_COLOR_2		0x00E5FF
+# define AGE_COLOR_3		0x448AFF
+# define AGE_COLOR_4		0xAB47BC
+# define AGE_COLOR_5		0xFF1744
 
 # define STATUS_HEIGHT		20
 
@@ -70,6 +79,8 @@ typedef struct s_grid
 	char	*cells;
 	char	*next;
 	char	*initial;
+	int		*age;
+	int		*age_next;
 }	t_grid;
 
 typedef struct s_mlx
@@ -162,6 +173,10 @@ int		grid_count_alive(t_grid *grid);
 int		edge_wrap_get(t_grid *grid, int x, int y);
 char	*edge_label(t_edge edge);
 
+/* grid_age.c */
+void	age_reset(t_grid *grid);
+int		next_age(t_grid *grid, int idx, int alive, int next);
+
 /* rules_step.c */
 int		count_neighbors(t_grid *grid, int x, int y);
 int		next_state(t_rule *rule, int alive, int neighbors);
@@ -180,6 +195,9 @@ void	init_mlx(t_game *game);
 /* render.c */
 void	put_pixel_img(t_mlx *mlx, int x, int y, int color);
 void	render_grid(t_game *game);
+
+/* render_color.c */
+int		age_color(int age);
 
 /* render_fields.c */
 char	*num_field(char *label, int value);

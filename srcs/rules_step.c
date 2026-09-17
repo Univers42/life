@@ -41,24 +41,33 @@ int	next_state(t_rule *rule, int alive, int neighbors)
 	return (rule->born[neighbors]);
 }
 
-static void	compute_row(t_game *game, int y, int *births, int *deaths)
+static void	compute_cell(t_worker *w, int x, int y)
 {
 	t_grid	*grid;
-	int		x;
+	int		idx;
 	int		alive;
 	int		next;
 
-	grid = &game->grid;
+	grid = &w->game->grid;
+	idx = y * grid->width + x;
+	alive = grid_get(grid, x, y);
+	next = next_state(&w->game->rule, alive, count_neighbors(grid, x, y));
+	if (next && !alive)
+		w->births++;
+	else if (!next && alive)
+		w->deaths++;
+	grid->next[idx] = next;
+	grid->age_next[idx] = next_age(grid, idx, alive, next);
+}
+
+static void	compute_row(t_worker *w, int y)
+{
+	int	x;
+
 	x = 0;
-	while (x < grid->width)
+	while (x < w->game->grid.width)
 	{
-		alive = grid_get(grid, x, y);
-		next = next_state(&game->rule, alive, count_neighbors(grid, x, y));
-		if (next && !alive)
-			(*births)++;
-		else if (!next && alive)
-			(*deaths)++;
-		grid->next[y * grid->width + x] = next;
+		compute_cell(w, x, y);
 		x++;
 	}
 }
@@ -72,7 +81,7 @@ void	compute_rows(t_worker *w)
 	y = w->y_start;
 	while (y < w->y_end)
 	{
-		compute_row(w->game, y, &w->births, &w->deaths);
+		compute_row(w, y);
 		y++;
 	}
 }
